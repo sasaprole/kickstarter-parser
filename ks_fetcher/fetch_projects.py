@@ -1,7 +1,6 @@
-from urllib.request import urlopen, urlretrieve
-import time
-import random
-class KickstarterFetcher():
+from urllib.request import urlopen
+
+class KickstarterProjectsFetcher():
     _starting_url = \
     "https://www.kickstarter.com/discover/advanced?sort=most_funded&seed=2531927&page="
 
@@ -21,13 +20,7 @@ class KickstarterFetcher():
             self.end_page)
 
     def fetch_next(self):
-        url_to_fetch = self.starting_url + str(self.curr_page)
-        urlretrieve(url_to_fetch, 'page_{}.html'.format(self.curr_page))
+        _url_to_fetch = self.starting_url + str(self.curr_page)
+        _result = urlopen(_url_to_fetch).read()
         self.curr_page += 1
-
-kf = KickstarterFetcher(1,50)
-
-for i in range(1,50):
-    print(i)
-    kf.fetch_next()
-    time.sleep(random.randint(0, 10))
+        return (_result, _url_to_fetch)
